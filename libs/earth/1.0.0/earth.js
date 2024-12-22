@@ -338,6 +338,10 @@
                 popupBox.id = "popup-location-mark-".concat(name)
                 document.body.appendChild(popupBox);
 
+                // Weather Information displayed when a station is clicked.
+                const weatherInfo = document.getElementById("weather-info");
+                const weatherInfoStation = document.getElementById("weather-info-station-name");
+                const closeButton = document.getElementById("close-button");
 
                 // Get reference to the hover target
                 const hoverTarget = document.getElementById("location-mark-".concat(name));
@@ -360,9 +364,15 @@
                 hoverTarget.addEventListener('mouseleave', () => {
                     popupBox.style.display = 'none';
                 });
+
+                hoverTarget.addEventListener('click', () => {
+                    weatherInfo.style.display = 'block';
+                    weatherInfoStation.textContent = name
+                });
                 mark.datum({type: "Point", coordinates: coordinates}).attr("d", path);
                 
                 });
+
 
                 
             })
@@ -838,6 +848,10 @@
      * Display the specified wind value. Allow toggling between the different types of wind units.
      */
     function showWindAtLocation(wind, product) {
+        // Changes Made by Manaruchi----------------------------------
+        const weatherInfo = document.getElementById("weather-info");
+        weatherInfo.style.display = 'none';
+        //------------------------------------------------------------
         var unitToggle = createUnitToggle("#location-wind-units", product), units = unitToggle.value();
         d3.select("#location-wind").text(µ.formatVector(wind, units));
         d3.select("#location-wind-units").text(units.label).on("click", function() {

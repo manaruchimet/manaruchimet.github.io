@@ -2,7 +2,7 @@
 <html itemscope itemtype="http://schema.org/Map" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
 <head>
     <meta charset="utf-8"/>
-    <title>AFCNWP</title>
+    <title>MOL</title>
     <meta itemprop="name"                                      content="earth"/>
     <meta itemprop="description"     name="description"        content="an animated map of global wind and weather"/>
     <meta itemprop="author"          name="author"             content="Cameron Beccario"/>
@@ -24,8 +24,19 @@
 <body data-lang="en">
 
     <!--[if lte IE 8]><p id="warn">This site requires IE9 or newer.</p><![endif]-->
-
+    <div class="weather-info" id="weather-info">
+        <div id="weather-info-header">
+            <div id="weather-info-station-name">
+                Station Name goes Here...
+            </div>
+            <button id="close-button" onclick="closeWeatherInfo()">X</button>
+        </div>
+        <div id="weather-info-content">
+            Weather Information from MOL will go here.
+        </div>
+    </div>
     <div id="display">
+        
         <svg id="map" class="fill-screen" xmlns="http://www.w3.org/2000/svg" version="1.1"></svg>
         <canvas id="animation" class="fill-screen"></canvas>
         <canvas id="overlay" class="fill-screen"></canvas>
@@ -143,6 +154,12 @@
     <script src="/libs/earth/1.0.0/products.js" charset="utf-8"></script>
     <script src="/libs/earth/1.0.0/earth.js" charset="utf-8"></script>
     
+    <script>
+        function closeWeatherInfo(){
+            const weatherInfo = document.getElementById("weather-info");
+            weatherInfo.style.display = 'none';
+        }
+    </script>
 
 </body>
 </html>

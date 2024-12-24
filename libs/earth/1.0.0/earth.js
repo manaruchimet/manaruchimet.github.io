@@ -309,74 +309,8 @@
         var lakes = d3.select(".lakes");
         d3.selectAll("path").attr("d", path);  // do an initial draw -- fixes issue with safari
 
-        // Changes Made by Manaruchi - Get all station points
-        var list_of_stations = []
-        fetch('Stations.geojson')
-            .then(response => {
-                if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(geojson => {
+        
 
-                
-                // Extract coordinates and properties
-                const features = geojson.features;
-                features.forEach(feature => {
-                const coordinates = feature.geometry.coordinates;
-                const name = feature.properties.STN_NAME;
-                list_of_stations.push([coordinates, name])
-                
-                var mark = d3.select(".location-mark-".concat(name));
-                if (!mark.node()) {
-                    mark = d3.select("#foreground").append("path").attr("class", "location-mark").attr("id","location-mark-".concat(name));
-                }
-                var popupBox = document.createElement('div');
-                popupBox.className = 'location-popup';
-                popupBox.textContent = name;
-                popupBox.id = "popup-location-mark-".concat(name)
-                document.body.appendChild(popupBox);
-
-                // Weather Information displayed when a station is clicked.
-                const weatherInfo = document.getElementById("weather-info");
-                const weatherInfoStation = document.getElementById("weather-info-station-name");
-                const closeButton = document.getElementById("close-button");
-
-                // Get reference to the hover target
-                const hoverTarget = document.getElementById("location-mark-".concat(name));
-
-                // Show popup on mouse enter
-                hoverTarget.addEventListener('mouseover', (event) => {
-                    
-                    // Position the popup relative to the hover target
-                    //console.log(list_of_stations[0][0][0]);
-
-                    const rect = hoverTarget.getBoundingClientRect();
-                    popupBox.style.left = `${rect.left}px`;
-                    popupBox.style.top = `${rect.bottom + window.scrollY + 10}px`;
-
-                    // Show the popup
-                    popupBox.style.display = 'block';
-                });
-
-                // Hide popup on mouse leave
-                hoverTarget.addEventListener('mouseleave', () => {
-                    popupBox.style.display = 'none';
-                });
-
-                hoverTarget.addEventListener('click', () => {
-                    weatherInfo.style.display = 'block';
-                    weatherInfoStation.textContent = name
-                });
-                mark.datum({type: "Point", coordinates: coordinates}).attr("d", path);
-                
-                });
-
-
-                
-            })
-            .catch(error => console.error('Error loading the GeoJSON file:', error));
 
         
 

@@ -2,7 +2,7 @@
 <html itemscope itemtype="http://schema.org/Map" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
 <head>
     <meta charset="utf-8"/>
-    <title>ABC</title>
+    <title>XYZ</title>
     <meta itemprop="name"                                      content="earth"/>
     <meta itemprop="description"     name="description"        content="an animated map of global wind and weather"/>
     <meta itemprop="author"          name="author"             content="Cameron Beccario"/>
@@ -32,7 +32,80 @@
             <button id="close-button" onclick="closeWeatherInfo()"> ✕ </button>
         </div>
         <div id="weather-info-content">
-            Weather Information from MOL will go here.
+            <p id="wx-info-time"></p>
+            <div id="wx-info-wrng">
+                <p id="wx-info-wrng-text"></p>
+            </div>
+            <table id="wx-info-main-table">
+                <tr>
+                    <td class="wx-info-main-table-head">
+                        Winds
+                    </td>
+                    <td colspan="3">
+                        <p id="wx-info-winds"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="wx-info-main-table-head">
+                        Weather
+                    </td>
+                    <td colspan="3">
+                        <p id="wx-info-weather"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="wx-info-main-table-head">
+                        Visiblity
+                    </td>
+                    <td colspan="3">
+                        <p id="wx-info-visiblity"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="wx-info-main-table-head">
+                        Clouds
+                    </td>
+                    <td colspan="3">
+                        <p id="wx-info-clouds"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="wx-info-main-table-head">
+                        DB
+                    </td>
+                    <td>
+                        <span id="wx-info-db"></span>&degC
+                    </td>
+                    <td class="wx-info-main-table-head">
+                        DP
+                    </td>
+                    <td>
+                        <span id="wx-info-dp">000</span>&degC
+                    </td>
+                </tr>
+                <tr>
+                    <td class="wx-info-main-table-head">
+                        QNH
+                    </td>
+                    <td>
+                        <span id="wx-info-qnh1"></span>hPa
+                    </td>
+                    <td>
+                        <span id="wx-info-qnh2"></span>in
+                    </td>
+                    <td>
+                        <span id="wx-info-qnh3"></span>mm
+                    </td>
+                </tr>
+                <tr>
+                    <td class="wx-info-main-table-head">
+                        Trend
+                    </td>
+                    <td colspan="3">
+                        <p id="wx-info-trend"></p>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
     <div id="display">
@@ -63,7 +136,7 @@
         </div>
 
         <p id="earth">
-            <span id="show-menu" class="text-button" title="menu">ABCDEFG</span>
+            <span id="show-menu" class="text-button" title="menu">ABCDEFGH</span>
             <span id="progress" class="invisible"></span>
         </p>
 

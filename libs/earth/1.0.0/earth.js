@@ -309,8 +309,152 @@
         var lakes = d3.select(".lakes");
         d3.selectAll("path").attr("d", path);  // do an initial draw -- fixes issue with safari
 
-        
+        // Changes Made by Manaruchi - Get all station points
+        var list_of_stations = []
+        fetch('currwx.json')
+            .then(response => {
+                if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(json => {
 
+                
+                // Extract coordinates and properties
+                const features = json['stations'];
+                console.log(features[0]);
+                console.log(features[3]);
+                console.log(features[10]);
+                features.forEach(feature => {
+                    const coordinates = [parseFloat(feature['lon']), parseFloat(feature['lat'])];
+                    const name = feature['stn_name'].slice(0,4);
+                    list_of_stations.push([coordinates, name])
+
+
+                    
+                    var mark = d3.select(".location-mark-".concat(name));
+                    if (!mark.node()) {
+                        var class_name_for_mark = "location-mark";
+                        if(feature['wrng'].slice(0,15) === "Weather Warning"){
+                            class_name_for_mark = "location-mark-red";
+                        }
+                        else if(feature['wrng'].slice(0,3) === "CMR"){
+                            class_name_for_mark = "location-mark-yellow";
+                        }
+                        else{
+                            class_name_for_mark = "location-mark";
+                        }
+                        mark = d3.select("#foreground").append("path").attr("class", class_name_for_mark).attr("id","location-mark-".concat(name));
+                    }
+                    mark.datum({type: "Point", coordinates: coordinates}).attr("d", path);
+                    var popupBox = document.createElement('div');
+                    popupBox.className = 'location-popup';
+                    popupBox.textContent = feature['stn_name'];
+                    popupBox.id = "popup-location-mark-".concat(name)
+                    document.body.appendChild(popupBox);
+
+                    // Weather Information displayed when a station is clicked.
+                    const weatherInfo = document.getElementById("weather-info");
+                    const weatherInfoStation = document.getElementById("weather-info-station-name");
+                    const closeButton = document.getElementById("close-button");
+
+                    // Get reference to the hover target
+                    const hoverTarget = document.getElementById("location-mark-".concat(name));
+
+                    // Show popup on mouse enter
+                    hoverTarget.addEventListener('mouseover', (event) => {
+                        
+                        // Position the popup relative to the hover target
+                        //console.log(list_of_stations[0][0][0]);
+
+                        const rect = hoverTarget.getBoundingClientRect();
+                        popupBox.style.left = `${rect.left}px`;
+                        popupBox.style.top = `${rect.bottom + window.scrollY + 10}px`;
+
+                        // Show the popup
+                        popupBox.style.display = 'block';
+                    });
+
+                    // Hide popup on mouse leave
+                    hoverTarget.addEventListener('mouseleave', () => {
+                        popupBox.style.display = 'none';
+                    });
+
+                    hoverTarget.addEventListener('click', () => {
+                        weatherInfo.style.display = 'block';
+                        weatherInfoStation.textContent = feature['stn_name'];
+
+                        // Time Data
+                        const wx_info_time = document.getElementById("wx-info-time");
+                        wx_info_time.textContent = feature['dt'] + " " + feature['tm'] + "Hr";
+
+                        // Warning Data
+                        const wx_info_wrng = document.getElementById("wx-info-wrng");
+                        if(feature['fm'] === "-"){
+                            wx_info_wrng.textContent = feature['wrng'];
+                        }
+                        else{
+                            wx_info_wrng.textContent = feature['wrng'] + " from " + feature['fm'] + "Hr to " + feature['upto'] + "Hr";
+                        }
+                        
+                        if(feature['wrng'].slice(0,15) === "Weather Warning"){
+                            wx_info_wrng.style.color = "white";
+                            wx_info_wrng.style.backgroundColor = "red";
+                        }
+                        else if(feature['wrng'].slice(0,3) === "CMR"){
+                            wx_info_wrng.style.color = "black";
+                            wx_info_wrng.style.backgroundColor = "yellow";
+                        }
+                        else{
+                            wx_info_wrng.style.color = "black";
+                            wx_info_wrng.style.backgroundColor = "green";
+                        }
+
+                        // Wind Data
+                        const wx_info_winds = document.getElementById("wx-info-winds");
+                        wx_info_winds.textContent = feature['dir'] + feature['speed'] + "KT";
+
+                        // Wx Data
+                        const wx_info_wx = document.getElementById("wx-info-weather");
+                        wx_info_wx.textContent = feature['wx'];
+
+                        // Visiblity Data
+                        const wx_info_vis = document.getElementById("wx-info-visiblity");
+                        wx_info_vis.textContent = feature['vis'];
+
+                        // Cloud Data
+                        const wx_info_clouds = document.getElementById("wx-info-clouds");
+                        wx_info_clouds.textContent = feature['cld'];
+
+                        // Temp Data
+                        const wx_info_db = document.getElementById("wx-info-db");
+                        wx_info_db.textContent = feature['db'];
+                        const wx_info_dp = document.getElementById("wx-info-dp");
+                        wx_info_dp.textContent = feature['dp'];
+
+                        // Pressure Data
+                        const wx_info_qnh1 = document.getElementById("wx-info-qnh1");
+                        wx_info_qnh1.textContent = feature['qnh'];
+                        const wx_info_qnh2 = document.getElementById("wx-info-qnh2");
+                        wx_info_qnh2.textContent = feature['qnhi'];
+                        const wx_info_qnh3 = document.getElementById("wx-info-qnh3");
+                        wx_info_qnh3.textContent = feature['qnhm'];
+
+
+                        // Trend Data
+                        const wx_info_trend = document.getElementById("wx-info-trend");
+                        wx_info_trend.textContent = feature['trend'];
+                        
+                    });
+                    
+                
+                });
+
+
+                
+            })
+            .catch(error => console.error('Error loading the GeoJSON file:', error));
 
         
 

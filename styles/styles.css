@@ -244,6 +244,18 @@ body {
     fill: #3aff3a;    
 }
 
+.location-mark-red {
+    stroke: red;
+    stroke-width: 1;
+    fill: red;    
+}
+
+.location-mark-yellow {
+    stroke: yellow;
+    stroke-width: 1;
+    fill: yellow;    
+}
+
 .location-mark2 {
     stroke: #3aff3a;
     stroke-width: 2.5;
@@ -294,6 +306,36 @@ body {
   #weather-info-header{
     display: flex;
     justify-content: space-between;
+  }
+
+  #wx-info-main-table{
+    /* border: 1px solid gray; */
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td {
+    border: 1px solid rgb(45, 42, 42);
+  }
+
+  .wx-info-main-table-head{
+    background-color: gray;
+  }
+
+  #wx-info-time{
+    font-size: small;
+  }
+
+  #wx-info-wrng{
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    white-space: pre-wrap;
+  }
+
+  #wx-info-wrng-text{
+    overflow:auto;
   }
 /**************************************************************************************************
  * About Page
